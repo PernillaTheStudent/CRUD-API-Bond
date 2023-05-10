@@ -36,7 +36,7 @@ const mockData = [
   },
   {
     id: 6,
-    name: "Pippi Långstrump",
+    name: "Pippi",
     powers: ["Superstyrka", "Hästviskare"],
     weaknesses: ["Skolplikt"],
     image: "pippi_langstrump.png",

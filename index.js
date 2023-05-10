@@ -139,9 +139,28 @@ app.put("/characters/:id", (req, res) => {
   characters[index] = updatedCharacter;
 
   // returnera den uppdaterade karaktären
-  res.json(characters);
+  res.json(updatedCharacter);
 
 })
+
+// app.get("/characters/:name", (req, res) => {
+//   //console.log(req);
+//   console.log("req body", req.body)
+//   // ta ut parameters från req
+//   const name = req.params.name;
+//   console.log("name", { name });
+
+//   // hämta vår uppdaterade karaktär från body
+//   const characterEdit = req.body.character;  // vår uppdatering, hämta input data från body/server
+//   console.log("characterEdit", characterEdit)
+
+//   const character = characters.find((char) => char.name === name);
+//   console.log("karaktär", character)
+  
+//   // returnera den uppdaterade karaktären
+//   res.json(characterEdit);
+
+// })
 
 // Starta servern på angiven port
 app.listen(port, () => {
