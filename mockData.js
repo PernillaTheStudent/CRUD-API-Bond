@@ -34,6 +34,13 @@ const mockData = [
     weaknesses: ["Rädsla för Tengil"],
     image: "broderna_lejonhjarta.png",
   },
+  {
+    id: 6,
+    name: "Pippi Långstrump",
+    powers: ["Superstyrka", "Hästviskare"],
+    weaknesses: ["Skolplikt"],
+    image: "pippi_langstrump.png",
+  },
 ];
 
 module.exports = mockData;
