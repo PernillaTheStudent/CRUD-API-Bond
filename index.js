@@ -6,7 +6,41 @@ const port = 3008;
 //const characters = mockData;
 let characters = mockData;
 
-app.use(express.json());   // middleware för att express ska kunna förstå json-data som skickas in
+// ANVÄND JSON-middleware
+app.use(express.json()); // middleware för att express ska kunna förstå json-data som skickas in
+
+const validApiKey = 5;
+
+const authenticateApiKey = (req, res, next) => {
+  const apiKey = req.query.apikey;
+  //console.log({apiKey});
+  console.log("typeof", typeof apiKey);
+  const numberApiKey = parseInt(apiKey);
+  console.log("typeof", typeof numberApiKey);
+
+  if (!apiKey) {
+    // returnera 401
+    return res
+      .status(401)
+      .json( { message: "apiKey missing"} );
+  }
+
+  // Vill vi se om api nyckeln är korrekt.
+  // Om den inte är det => returnera en 403
+  if (numberApiKey !== validApiKey) {
+    return res.status(403).json( { message: "Invalid apiKey"} )
+  }
+
+  // Om vi har kommit hit, så vill vi skicka vidare användare till API routen
+  next()
+};
+
+// middleware for AUTHENTICATION med APIKEY
+app.use((req, res, next) => {
+  // console.log(`${req.method} ${req.url}`);
+  console.log(req.query);
+  authenticateApiKey(req, res, next);
+});
 
 app.get("/", (req, res) => {
   res.send("Hello World! How are you doing?");
@@ -54,9 +88,7 @@ app.delete("/characters/:id", (req, res) => {
   console.log("character", character);
 
   if (!character) {
-    return res
-      .status(404)
-      .json({ message: "Karatär med det ID:et finns ej!" });
+    return res.status(404).json({ message: "Karatär med det ID:et finns ej!" });
   }
 
   const newData = characters.filter((char) => char.id !== numberId);
@@ -85,12 +117,12 @@ app.post("/characters", (req, res) => {
 
   //console.log(id);
   const newCharacter = req.body.character;
-  console.log(req.body);     // { character: { id: 123, ...} }
+  console.log(req.body); // { character: { id: 123, ...} }
   console.log(newCharacter); // { id: 123, ...}
 
   const newCharacterId = {
     ...newCharacter,
-    id: nextId
+    id: nextId,
   };
 
   nextId++;
@@ -102,46 +134,45 @@ app.post("/characters", (req, res) => {
 
   // returnera ett json objekt till klienten med den nyligen tillagda karaktären
   res.json(newCharacterId);
-
 });
 
 app.put("/characters/:id", (req, res) => {
-  console.log("req body", req.body)
+  console.log("req body", req.body);
   // ta ut parameters från req
   const id = req.params.id;
   const numbId = parseInt(id);
   //console.log("id");
-  
+
   // hämta vår uppdaterade karaktär från body
-  const characterEdit = req.body.character;  // vår uppdatering, hämta input data från body
+  const characterEdit = req.body.character; // vår uppdatering, hämta input data från body
   //console.log("character", updatedCharacter)
-  console.log("id & character", { numbId, characterEdit })
+  console.log("id & character", { numbId, characterEdit });
   //const newCharacterBody = updatedCharacter.body;
   //console.log("character body", newCharacterBody);
 
   // kolla om id:t finns i vår lista av karaktärer
   const index = characters.findIndex((char) => char.id === numbId);
-  console.log("index", index)
-
+  console.log("index", index);
 
   // om den inte finns, returnera 404
   //if (!character) {
   if (index === -1) {
-    return res.status(404).json({ message: "Karaktären med det id:t finns ej!" })
+    return res
+      .status(404)
+      .json({ message: "Karaktären med det id:t finns ej!" });
   }
 
   // om den finns, uppdatera objektet
   const character = characters.find((char) => char.id === numbId);
   console.log("find character", character);
-  console.log("characters[index]", characters[index])
+  console.log("characters[index]", characters[index]);
   const updatedCharacter = { ...characters[index], ...characterEdit };
   console.log("updatedCharacter", updatedCharacter);
   characters[index] = updatedCharacter;
 
   // returnera den uppdaterade karaktären
   res.json(updatedCharacter);
-
-})
+});
 
 // app.get("/characters/:name", (req, res) => {
 //   //console.log(req);
@@ -156,7 +187,7 @@ app.put("/characters/:id", (req, res) => {
 
 //   const character = characters.find((char) => char.name === name);
 //   console.log("karaktär", character)
-  
+
 //   // returnera den uppdaterade karaktären
 //   res.json(characterEdit);
 
