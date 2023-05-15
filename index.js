@@ -20,6 +20,7 @@ app.use(express.json()); // middleware för att express ska kunna förstå json-
 const validApiKey = 5;
 
 const authenticateApiKey = (req, res, next) => {
+  //console.log("Req", req)
   const apiKey = req.query.apiKey;
   //console.log({apiKey});
   console.log("typeof", typeof apiKey);
