@@ -1,18 +1,18 @@
 const express = require("express");
-const characters = require("./routes/characters");
-const cors = require("cors");
+const movies = require("./routes/movies");
+//const cors = require("cors");
 
 const app = express();
-const port = 3008;
+const port = 3005;
 
 // Configure CORS policy
-const corsOptions = {
-  origin: "http://localhost:3004", // Only allow requests from localhost:3004
-};
+// const corsOptions = {
+//   origin: "http://localhost:3004", // Only allow requests from localhost:3004
+// };
 
 // Apply CORS middleware to all routes
 // Varje gång ett API calls kommer in
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // ANVÄND JSON-middleware
 app.use(express.json()); // middleware för att express ska kunna förstå json-data som skickas in
@@ -23,9 +23,9 @@ const authenticateApiKey = (req, res, next) => {
   //console.log("Req", req)
   const apiKey = req.query.apiKey;
   //console.log({apiKey});
-  console.log("typeof", typeof apiKey);
+  //console.log("typeof", typeof apiKey);
   const numberApiKey = parseInt(apiKey);
-  console.log("typeof", typeof numberApiKey);
+  //console.log("typeof", typeof numberApiKey);
 
   if (!apiKey) {
     // returnera 401
@@ -47,7 +47,7 @@ const authenticateApiKey = (req, res, next) => {
 // middleware for AUTHENTICATION med APIKEY
 app.use((req, res, next) => {
   // console.log(`${req.method} ${req.url}`);
-  console.log(req.query);
+  console.log("middleware authentication", req.query);
   authenticateApiKey(req, res, next);
 });
 
@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
   console.log("hello world"); // visible in terminal
 });
 
-app.use("/characters", characters);
+app.use("/movies", movies);
 
 // Starta servern på angiven port
 app.listen(port, () => {
