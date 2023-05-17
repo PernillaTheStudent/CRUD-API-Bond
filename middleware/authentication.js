@@ -1,14 +1,12 @@
 const apiKeys = require("../apiKeysData");
 
-const adminKey = 55;
+const adminKey = "55";
 
 const authenticateApiKey = (req, res, next) => {
   //console.log("apiKeys", module.exports.apiKeys);
-  console.log("apiKeys", apiKeys);
   const apiKey = req.query.apiKey;
-  const numberApiKey = parseInt(apiKey);
 
-  if (req.path === "/") {
+  if (req.path === "/" || apiKey === adminKey ) {
     next();
     return;
   }
@@ -20,7 +18,9 @@ const authenticateApiKey = (req, res, next) => {
 
   if (req.path.startsWith("/movies")) {
     const existingKey = apiKeys.find((key) => key.key === apiKey);
-    if (!existingKey) {
+    console.log("adminKey", adminKey);
+
+    if (!existingKey)  {
       return res.status(403).json({ message: "Invalid apiKey" });
     }
     if (
@@ -32,7 +32,7 @@ const authenticateApiKey = (req, res, next) => {
   }
 
   if (req.path.startsWith("/apikeys")) {
-    if (numberApiKey !== adminKey) {
+    if (apiKey !== adminKey) {
       return res
         .status(403)
         .json({ message: "Invalid apiKey for admin" + apiKey });
