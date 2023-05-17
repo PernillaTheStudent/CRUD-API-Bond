@@ -1,39 +1,14 @@
 const express = require("express");
-const moviesRoutes = require("./routes/movies");
+const authenticateApiKey = require("./middleware/authentication");
 const homeRoutes = require("./routes/home");
+const moviesRoutes = require("./routes/movies");
+const apikeysRoutes = require("./routes/apikeys");
 
 const app = express();
 const port = 3005;
 
 // ANVÄND JSON-middleware
 app.use(express.json()); // middleware för att express ska kunna förstå json-data som skickas in
-
-const validApiKey = 5;
-
-const authenticateApiKey = (req, res, next) => {
-  //console.log("Req", req)
-  const apiKey = req.query.apiKey;
-  //console.log({apiKey});
-  //console.log("typeof", typeof apiKey);
-  const numberApiKey = parseInt(apiKey);
-  //console.log("typeof", typeof numberApiKey);
-
-  if (!apiKey) {
-    // returnera 401
-    return res
-      .status(401)
-      .json({ message: "apiKey missing" });
-  }
-
-  // Vill vi se om api nyckeln är korrekt.
-  // Om den inte är det => returnera en 403
-  if (numberApiKey !== validApiKey) {
-    return res.status(403).json({ message: "Invalid apiKey" })
-  }
-
-  // Om vi har kommit hit, så vill vi skicka vidare användare till API routen
-  next()
-};
 
 // middleware for AUTHENTICATION med APIKEY
 app.use((req, res, next) => {
@@ -50,8 +25,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/movies", moviesRoutes);
 app.use(homeRoutes);
+app.use("/movies", moviesRoutes);
+app.use("/apikeys", apikeysRoutes);
 
 app.use((req, res, next) => {
   res.status(404).send("<h1>Page Not Found</h1>");
