@@ -33,7 +33,7 @@ app.use((req, res, next) => {
   res.status(404).send("<h1>Page Not Found</h1>");
   let err = new Error("Not Found");
   err.status = 404;
-  next(err);  // Den inbyggda felhanteraren ger ett fel och en stacktrace.
+  next(err); // Den inbyggda felhanteraren ger ett fel och en stacktrace.
 });
 
 app.use((err, req, res, next) => {
@@ -42,15 +42,14 @@ app.use((err, req, res, next) => {
   }
 
   res.status(err.status || 500).json({
-    "errors": [
+    errors: [
       {
-        "status": err.status,
-        "title": err.message,
-        "detail": err.message
-      }
-    ]
+        status: err.status,
+        title: err.message,
+        detail: err.message,
+      },
+    ],
   });
-
 });
 
 // Starta servern på angiven port

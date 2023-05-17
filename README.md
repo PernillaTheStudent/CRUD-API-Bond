@@ -1,6 +1,6 @@
-# Karaktär API
+# API för Bond Filmer
 
-Det här projektet innehåller ett enkelt REST API för att hantera karaktärer. Det är skrivet i Node.js och använder Express.js som webbserver.
+Det här projektet innehåller ett enkelt REST API för att hantera Bond filmer. Det är skrivet i Node.js och använder Express.js som webbserver.
 
 ## Installation
 

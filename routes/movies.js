@@ -29,7 +29,7 @@ let nextId = 28457;
 
 router.post("/", (req, res) => {
   const movie = req.body;
-  //console.log(req.body); 
+  //console.log(req.body);
   const errors = validateMovie(movie);
   if (errors.length !== 0) {
     return res.status(400).json({ message: "Validation failed", errors });
@@ -41,7 +41,7 @@ router.post("/", (req, res) => {
     ...movie,
     imdbID: "tt" + nextId,
   };
-  console.log("newMovie", newMovie)
+  console.log("newMovie", newMovie);
 
   // Lägg till den nya filmen
   movies = [...movies, newMovie];
@@ -55,7 +55,7 @@ router.put("/:id", (req, res) => {
   console.log("req body", req.body);
   const id = req.params.id;
   const movieEdit = req.body;
-    console.log("id & character", { id, movieEdit });
+  console.log("id & character", { id, movieEdit });
 
   // kolla om id:t finns i vår lista av filmer
   const index = movies.findIndex((movie) => movie.imdbID === id);
