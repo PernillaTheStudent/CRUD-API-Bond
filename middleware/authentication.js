@@ -6,6 +6,7 @@ const authenticateApiKey = (req, res, next) => {
     //console.log("apiKeys", module.exports.apiKeys);
     console.log("apiKeys", apiKeys);
     const apiKey = req.query.apiKey;
+    
     //console.log({apiKey});
     //console.log("typeof", typeof apiKey);
     const numberApiKey = parseInt(apiKey);
@@ -34,8 +35,8 @@ const authenticateApiKey = (req, res, next) => {
     }
 
     if (req.path.startsWith("/apikeys")) {
-        if (apiKey !== adminKey) {
-            return res.status(403).json({ message: "Invalid apiKey" })
+        if (numberApiKey !== adminKey) {
+            return res.status(403).json({ message: "Invalid apiKey for admin" + apiKey })
         }    
     }
 
