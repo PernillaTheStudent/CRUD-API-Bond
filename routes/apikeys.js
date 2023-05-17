@@ -5,7 +5,7 @@ let apiKeys = require("../apiKeysData");
 router.post("/", (req, res) => {
   const newKey = req.body;
 
-  if (!newKey.name) {
+  if (!newKey.name || newKey.name.trim().length === 0) {
     return res.status(400).json({ message: "ApiKey must contain a name" });
   }
 
